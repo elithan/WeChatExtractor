@@ -23,18 +23,27 @@ jobs:
         run: |
           export THEOS=~/theos
           git clone --recursive https://github.com/theos/theos.git $THEOS
-          # 下载 SDK
+          
+          # 使用更可靠的 SDK 下载地址 (14.5)
           mkdir -p $THEOS/sdks
-          curl -L https://github.com/theos/sdks/raw/master/iPhoneOS14.5.sdk.tar.xz -o $THEOS/sdks/iPhoneOS14.5.sdk.tar.xz
-          tar -xf $THEOS/sdks/iPhoneOS14.5.sdk.tar.xz -C $THEOS/sdks
-          rm $THEOS/sdks/iPhoneOS14.5.sdk.tar.xz
+          curl -L "https://github.com/theos/sdks/raw/master/iPhoneOS14.5.sdk.tar.xz" -o $THEOS/sdks/sdk.tar.xz
+          
+          # 检查文件大小，如果太小则尝试备用地址
+          FILESIZE=$(stat -f%z "$THEOS/sdks/sdk.tar.xz")
+          if [ $FILESIZE -lt 1000000 ]; then
+            echo "Primary SDK link failed, trying backup..."
+            curl -L "https://raw.githubusercontent.com/theos/sdks/master/iPhoneOS14.5.sdk.tar.xz" -o $THEOS/sdks/sdk.tar.xz
+          fi
+          
+          tar -xf $THEOS/sdks/sdk.tar.xz -C $THEOS/sdks
+          rm $THEOS/sdks/sdk.tar.xz
 
       - name: Build Package
         run: |
           export THEOS=~/theos
-          # 开启详细日志以便排错
+          # 显式指定 SDK 路径以防万一
           make package FINALPACKAGE=1 DEBUG=0
-
+          
       - name: Upload DEB Artifact
         uses: actions/upload-artifact@v4
         with:
