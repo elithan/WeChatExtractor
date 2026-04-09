@@ -7,12 +7,15 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
@@ -29,7 +32,8 @@ jobs:
       - name: Build Package
         run: |
           export THEOS=~/theos
-          make package FINALPACKAGE=1
+          # 开启详细日志以便排错
+          make package FINALPACKAGE=1 DEBUG=0
 
       - name: Upload DEB Artifact
         uses: actions/upload-artifact@v4
