@@ -1,6 +1,10 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
+@interface MMUIViewController : UIViewController
+- (void)handleIconExtractionGesture:(UILongPressGestureRecognizer *)gesture;
+@end
+
 @interface UIImage (Private)
 @property (nonatomic, readonly) NSString *imageAsset;
 @end
