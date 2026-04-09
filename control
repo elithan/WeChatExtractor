@@ -1,0 +1,9 @@
+Package: com.yourname.wechat-extractor
+Name: WeChat Icon Extractor
+Depends: mobilesubstrate
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: Extract icons (SVG, PNG) from WeChat views.
+Maintainer: Your Name
+Author: Your Name
+Section: Tweaks
