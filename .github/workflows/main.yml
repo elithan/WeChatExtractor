@@ -32,7 +32,7 @@ jobs:
           make package FINALPACKAGE=1
 
       - name: Upload DEB Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: WeChatExtractor-DEB
           path: packages/*.deb
